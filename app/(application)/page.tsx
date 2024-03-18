@@ -58,23 +58,16 @@ export default function Home() {
         Loja mais próxima
       </h1>
       <BookingItem className="mt-4" />
-      <div className="flex items-center align-middle justify-center pt-4">
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 border-primary-900 font-extrabold text-primary-900 focus:ring-2 bg-transparent ring-offset-2"
-        >
-          Ver mais
-          <CgArrowTopRightR size={24} />
-        </Button>
-      </div>
+      <BookingItem className="mt-4" />
+
+      <BookingItem className="mt-4" />
+
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight py-4">
         Mais recomendado
       </h1>
 
       <Carousel opts={slideOptions}>
         <CarouselContent>
-          <CarouselPrevious className="w-8 h-8 rounded-full flex items-center justify-center bg-primary-900 p-0 text-red-500" />
-
           <CarouselItem>
             <div className="relative w-full rounded-xl">
               <Image
@@ -169,8 +162,21 @@ export default function Home() {
             </div>
           </CarouselItem>
         </CarouselContent>
-        <CarouselNext className="w-8 h-8 rounded-full flex items-center justify-center bg-primary-900 p-0 text-red-500" />
       </Carousel>
+
+      <BookingItem className="mt-4" />
+      <BookingItem className="mt-4" />
+
+      <BookingItem className="mt-4" />
+      <div className="flex items-center align-middle justify-center pt-4">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 border-primary-900 font-extrabold text-primary-900 focus:ring-2 bg-transparent ring-offset-2"
+        >
+          Ver mais
+          <CgArrowTopRightR size={24} />
+        </Button>
+      </div>
     </div>
   )
 }
