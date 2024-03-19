@@ -22,10 +22,12 @@ import { Button } from '@/components/ui/button'
 import { BsQuestionSquareFill } from 'react-icons/bs'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Ratings } from './rating'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
   const toggleGroupItemClasses =
-    'hover:bg-primary-50 data-[state=on]:bg-primary-50 data-[state=on]:ring-1 data-[state=on]:ring-primary-900 text-base data-[state=off]:bg-white data-[state=off]:text-gray-500'
+    'hover:bg-primary-50 data-[state=on]:bg-primary-50 ring-1 ring-primary-200 data-[state=on]:ring-1 data-[state=on]:ring-primary-900 text-base data-[state=off]:bg-white data-[state=off]:text-gray-500'
 
   return (
     <div className="w-full flex items-center gap-3">
@@ -96,7 +98,7 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
             </h1>
             <ToggleGroup
               type="multiple"
-              className="w-full flex flex-wrap gap-2"
+              className="w-full flex flex-wrap gap-2 align-middle justify-start items-start"
             >
               <ToggleGroupItem className={toggleGroupItemClasses} value="Todos">
                 Todos
@@ -136,11 +138,45 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
               Ranking
             </h1>
             <Ratings rating={2.5} variant="yellow" totalStars={4} size={28} />
+
+            <h1 className="text-lg font-bold text-primary-900 my-4">
+              Distancia
+            </h1>
+            <div className="flex gap-8 items-center ">
+              <div className="grid w-fit max-w-sm items-center gap-1">
+                <Label htmlFor="de" className="text-primary-500 text-sm">
+                  De
+                </Label>
+                <div className="flex gap-2 items-end">
+                  <Input
+                    type="text"
+                    id="de"
+                    placeholder="0.1"
+                    className="lex text-center max-w-14 border-primary-900 text-primary-900 focus:outline-none focus-visible:ring-0"
+                  />
+                  <h3 className="text-primary-900 font-extralight">Km</h3>
+                </div>
+              </div>
+              <div className="grid w-fit max-w-sm items-center gap-1">
+                <Label htmlFor="de" className="text-primary-500 text-sm">
+                  Ate
+                </Label>
+                <div className="flex gap-2 items-end">
+                  <Input
+                    type="text"
+                    id="de"
+                    placeholder="1"
+                    className="flex text-center max-w-14 border-primary-900 text-primary-900 focus:outline-none focus-visible:ring-0"
+                  />
+                  <h3 className="text-primary-900 font-extralight">Km</h3>
+                </div>
+              </div>
+            </div>
           </div>
           <DrawerFooter className="bg-white">
             <Button
               variant="default"
-              className="w-full bg-primary-900 text-white font-extrabold"
+              className="w-full bg-primary-900 text-white font-extrabold h-[54px]"
             >
               Aplicar
             </Button>
