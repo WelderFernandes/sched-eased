@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans as PlusJakartaSans } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
-import { Header } from './(application)/_components/header'
 import Head from 'next/head'
 
 const plusJakartaSans = PlusJakartaSans({
@@ -24,10 +23,7 @@ export default function RootLayout({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <body>
-        <Header />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
