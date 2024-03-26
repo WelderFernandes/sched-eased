@@ -117,13 +117,13 @@ export default function Login() {
               Login
             </Button>
           </div>
-          <p className="text-gray-500 font-sm tracking-tighter leading-5 text-center pb-6">
-            Ja possui uma conta?{' '}
+          <p className="flex gap-2 align-middle justify-center items-center text-gray-500 font-sm tracking-tighter leading-5 text-center pb-6">
+            Não tem uma conta?
             <Link
               href="/login"
               className="text-primary-900 font-bold text-md tracking-tighter leading-5"
             >
-              login
+              Registar
             </Link>
           </p>
         </CardContent>
