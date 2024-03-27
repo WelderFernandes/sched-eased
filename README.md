@@ -13,6 +13,8 @@ pnpm dev
 # or
 bun dev
 ```
+* Usar
+https://github.com/jackocnr/intl-tel-input
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

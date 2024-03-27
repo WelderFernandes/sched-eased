@@ -20,15 +20,42 @@ import {
   FaLock,
 } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
+import { z } from 'zod'
+import { cn } from '@/lib/utils'
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
 
   const route = useRouter()
 
+  const schema = z.object({
+    email: z
+      .string()
+      .min(1, { message: 'O email é obrigatório' })
+      .email({ message: 'Insira um email valido' }),
+    password: z
+      .string()
+      .min(1, { message: 'A senha é obrigatória' })
+      .min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
+  })
+
+  type FormData = z.infer<typeof schema>
+
   function handleBackHomePage() {
     route.back()
   }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  })
+
+  console.log({ errors, register })
 
   return (
     <div className="flex flex-col p-0 m-0">
@@ -70,7 +97,10 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         <CardContent className="w-full p-0 m-0 ">
-          <div className="w-full px-5 py-6 flex flex-col gap-5">
+          <form
+            onSubmit={handleSubmit((data) => console.log(data))}
+            className="w-full px-5 py-6 flex flex-col gap-5"
+          >
             <div className="grid w-full items-center gap-1.5">
               <Label
                 htmlFor="email"
@@ -78,15 +108,24 @@ export default function Login() {
               >
                 Username
               </Label>
-              <div className="w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12">
+              <div
+                className={cn(
+                  'w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12',
+                  errors?.email && 'ring-red-500 ring',
+                )}
+              >
                 <FaEnvelope className="w-5 h-5 text-primary-900" />
                 <Input
                   type="text"
                   id="email"
+                  {...register('email')}
                   placeholder="joao@gmail.com"
                   className="border-none"
                 />
               </div>
+              {errors?.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label
@@ -95,14 +134,21 @@ export default function Login() {
               >
                 Senha
               </Label>
-              <div className="w-full flex border align-middle items-center rounded-md shadow-sm pl-4 pr-2 border-gray-300 h-12">
+              <div
+                className={cn(
+                  'w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12',
+                  errors?.email && 'ring-red-500 ring',
+                )}
+              >
                 <FaLock className="w-5 h-5 text-primary-900" />
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
+                  {...register('password')}
                   placeholder="******"
                   className="border-none outline-none focus:outline-none focus-within:outline-none focus-within:border-none focus-within:ring-0 placeholder:flex "
                 />
+
                 {showPassword ? (
                   <Button
                     variant="ghost"
@@ -121,7 +167,13 @@ export default function Login() {
                   </Button>
                 )}
               </div>
+              {errors?.password && (
+                <p className="text-red-500 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
+
             <div className="w-full flex justify-end gap-1.5" aria-hidden="true">
               <Link
                 href="/forgot-password"
@@ -131,12 +183,13 @@ export default function Login() {
               </Link>
             </div>
             <Button
+              type="submit"
               className="bg-primary-900 h-12 text-ellipsis text-white text-md"
               color="primary"
             >
               Login
             </Button>
-          </div>
+          </form>
           <p className="flex gap-2 align-middle justify-center items-center text-gray-500 font-sm tracking-tighter leading-5 text-center pb-6">
             Não tem uma conta?
             <Link
