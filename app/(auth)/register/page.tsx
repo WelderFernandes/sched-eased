@@ -3,9 +3,18 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
-import { FaUser, FaEnvelope, FaLock, FaPhone } from 'react-icons/fa6'
+import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa6'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import { useState } from 'react'
 
 export default function Register() {
+  const [phone, setPhone] = useState<string>()
+
+  function handleChangePhone(value: string) {
+    setPhone(value)
+    console.log(`Phone number changed to ${value}`)
+  }
   return (
     <div className=" px-5 flex flex-col h-screen justify-center">
       <h1 className="text-3xl font-extrabold py-6 text-primary-900">
@@ -47,14 +56,25 @@ export default function Register() {
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="cellphone">Celular</Label>
           <div className="w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12">
-            <FaPhone className="w-5 h-5 text-primary-900" />
-            <Input
+            {/* <FaPhone className="w-5 h-5 text-primary-900" /> */}
+            {/* <Input
               type="text"
               id="cellphone"
               placeholder="(00) 0000-0000"
               className="border-none"
+            /> */}
+            <PhoneInput
+              placeholder="Digite seu celular"
+              value={phone}
+              defaultCountry="BR"
+              onChange={(value) => handleChangePhone(value as string)}
+              initialValueFormat="national"
+              countryCallingCodeEditable={false}
             />
           </div>
+          <p className="text-gray-500 font-sm tracking-tighter leading-5">
+            {phone}
+          </p>
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="password">Criar Senha</Label>
