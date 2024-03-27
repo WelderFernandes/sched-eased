@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { FaLocationDot, FaUser } from 'react-icons/fa6'
 import { FaCalendarAlt, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
@@ -7,9 +8,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export function Header() {
+  const route = useRouter()
+
   return (
     <header className="flex justify-between h-20 items-center mx-4  ">
       <div className="items-center">
@@ -35,13 +38,13 @@ export function Header() {
             <PopoverContent>
               <ul className="flex flex-col gap-4 ">
                 <li>
-                  <Link
-                    href="/login"
+                  <Button
+                    onClick={() => route.push('/login')}
                     className="w-full text-primary-900 text-md flex gap-2 ring-2 ring-primary-600 p-2 rounded-sm  items-center justify-center align-middle "
                   >
                     Login
                     <FaSignInAlt size={14} className="text-primary-900" />
-                  </Link>
+                  </Button>
                 </li>
                 <li>
                   <Button

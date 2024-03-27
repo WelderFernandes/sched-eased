@@ -12,10 +12,23 @@ import { Label } from '@/components/ui/label'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { FaEnvelope, FaEye, FaEyeLowVision, FaLock } from 'react-icons/fa6'
+import {
+  FaArrowLeftLong,
+  FaEnvelope,
+  FaEye,
+  FaEyeLowVision,
+  FaLock,
+} from 'react-icons/fa6'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
+
+  const route = useRouter()
+
+  function handleBackHomePage() {
+    route.back()
+  }
 
   return (
     <div className="flex flex-col p-0 m-0">
@@ -28,6 +41,13 @@ export default function Login() {
           quality={100}
           className="absolute w-full top-0 left-0 right-0"
         />
+        <Button
+          variant="default"
+          className="relative top-3 left-3 bg-primary-900"
+          onClick={handleBackHomePage}
+        >
+          <FaArrowLeftLong size={24} className="text-white " />
+        </Button>
         <div className="flex item-center align-middle justify-center">
           <Image
             src="/login-pic.png"
@@ -120,10 +140,10 @@ export default function Login() {
           <p className="flex gap-2 align-middle justify-center items-center text-gray-500 font-sm tracking-tighter leading-5 text-center pb-6">
             Não tem uma conta?
             <Link
-              href="/login"
+              href="/register"
               className="text-primary-900 font-bold text-md tracking-tighter leading-5"
             >
-              Registar
+              Registrar
             </Link>
           </p>
         </CardContent>
