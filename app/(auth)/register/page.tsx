@@ -12,7 +12,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { z } from 'zod'
-import { InputSched } from '@/components/input'
 
 interface User {
   name: string
@@ -28,18 +27,24 @@ export default function Register() {
 
   // const route = useRouter()
 
-  const schema = z.object({
-    name: z.string().min(1, { message: 'O nome é obrigatório' }),
-    email: z
-      .string()
-      .min(1, { message: 'O email é obrigatório' })
-      .email({ message: 'Insira um email valido' }),
-    password: z
-      .string()
-      .min(1, { message: 'A senha é obrigatória' })
-      .min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
-    phone: z.string().min(1, { message: 'O telefone é obrigatório' }),
-  })
+  const schema = z
+    .object({
+      name: z.string().min(1, { message: 'O nome é obrigatório' }),
+      email: z
+        .string()
+        .min(1, { message: 'O email é obrigatório' })
+        .email({ message: 'Insira um email valido' }),
+      password: z
+        .string()
+        .min(1, { message: 'A senha é obrigatória' })
+        .min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
+      confirmPassword: z.string(),
+      phone: z.string().min(1, { message: 'O telefone é obrigatório' }),
+    })
+    .refine((values) => values.password === values.confirmPassword, {
+      message: 'As senhas precisam ser iguais',
+      path: ['confirmPassword'],
+    })
 
   type FormData = z.infer<typeof schema>
 
@@ -70,13 +75,6 @@ export default function Register() {
         action="#"
         method=""
       >
-        <InputSched.Root>
-          <InputSched.Icon icon={FaUser} />
-          <InputSched.Content id="phone" placeholder="Telefone" type="tel" />
-          <InputSched.Actions>
-            <InputSched.Password icon={FaLock} />
-          </InputSched.Actions>
-        </InputSched.Root>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="name">Nome</Label>
           <div className="w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12">
@@ -154,8 +152,14 @@ export default function Register() {
               id="confirmPassword"
               placeholder="******"
               className="border-none"
+              {...register('confirmPassword')}
             />
           </div>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm">
+              {errors.confirmPassword?.message}
+            </p>
+          )}
         </div>
         <Button
           type="submit"
