@@ -7,14 +7,54 @@ import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa6'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import { useState } from 'react'
+// import { signIn } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import { z } from 'zod'
+import { InputSched } from '@/components/input'
+
+interface User {
+  name: string
+  email: string
+  password: string
+  confirmPassword?: string
+  phone: string
+}
 
 export default function Register() {
   const [phone, setPhone] = useState<string>()
+  const [data, setData] = useState<User>()
 
+  // const route = useRouter()
+
+  const schema = z.object({
+    name: z.string().min(1, { message: 'O nome é obrigatório' }),
+    email: z
+      .string()
+      .min(1, { message: 'O email é obrigatório' })
+      .email({ message: 'Insira um email valido' }),
+    password: z
+      .string()
+      .min(1, { message: 'A senha é obrigatória' })
+      .min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
+    phone: z.string().min(1, { message: 'O telefone é obrigatório' }),
+  })
+
+  type FormData = z.infer<typeof schema>
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  })
   function handleChangePhone(value: string) {
     setPhone(value)
     console.log(`Phone number changed to ${value}`)
   }
+
   return (
     <div className=" px-5 flex flex-col h-screen justify-center">
       <h1 className="text-3xl font-extrabold py-6 text-primary-900">
@@ -25,10 +65,18 @@ export default function Register() {
         conta
       </p>
       <form
+        onSubmit={handleSubmit((data) => setData(data))}
         className="w-full py-6 flex flex-col gap-4 align-middle justify-center items-center "
         action="#"
         method=""
       >
+        <InputSched.Root>
+          <InputSched.Icon icon={FaUser} />
+          <InputSched.Content id="phone" placeholder="Telefone" type="tel" />
+          <InputSched.Actions>
+            <InputSched.Password icon={FaLock} />
+          </InputSched.Actions>
+        </InputSched.Root>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="name">Nome</Label>
           <div className="w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12">
@@ -38,8 +86,12 @@ export default function Register() {
               id="name"
               placeholder="Nome"
               className="border-none"
+              {...register('name')}
             />
           </div>
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="email">E-mail</Label>
@@ -50,20 +102,18 @@ export default function Register() {
               id="email"
               placeholder="joão@gmail.com"
               className="border-none"
+              {...register('email')}
             />
           </div>
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="cellphone">Celular</Label>
           <div className="w-full flex border align-middle items-center rounded-md shadow-sm px-4 border-gray-300 h-12">
-            {/* <FaPhone className="w-5 h-5 text-primary-900" /> */}
-            {/* <Input
-              type="text"
-              id="cellphone"
-              placeholder="(00) 0000-0000"
-              className="border-none"
-            /> */}
             <PhoneInput
+              {...register('phone')}
               placeholder="Digite seu celular"
               value={phone}
               defaultCountry="BR"
@@ -72,6 +122,9 @@ export default function Register() {
               countryCallingCodeEditable={false}
             />
           </div>
+          {errors.phone && (
+            <p className="text-red-500 text-sm">{errors.phone.message}</p>
+          )}
           <p className="text-gray-500 font-sm tracking-tighter leading-5">
             {phone}
           </p>
@@ -85,8 +138,12 @@ export default function Register() {
               id="password"
               placeholder="******"
               className="border-none"
+              {...register('password')}
             />
           </div>
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          )}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="confirmPassword">Confirmar Senha</Label>
@@ -100,7 +157,10 @@ export default function Register() {
             />
           </div>
         </div>
-        <Button className="w-full bg-primary-900 text-white h-14 text-md font-extrabold">
+        <Button
+          type="submit"
+          className="w-full bg-primary-900 text-white h-14 text-md font-extrabold"
+        >
           Cadastrar
         </Button>
       </form>
@@ -114,6 +174,9 @@ export default function Register() {
           login
         </Link>
       </p>
+      <pre>
+        <code>{JSON.stringify(data, null, 2)}</code>
+      </pre>
     </div>
   )
 }

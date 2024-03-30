@@ -190,6 +190,7 @@ export default function Login() {
               Login
             </Button>
           </form>
+
           <p className="flex gap-2 align-middle justify-center items-center text-gray-500 font-sm tracking-tighter leading-5 text-center pb-6">
             Não tem uma conta?
             <Link
