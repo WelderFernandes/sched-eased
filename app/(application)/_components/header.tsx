@@ -9,9 +9,11 @@ import {
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'
 
 export function Header() {
   const route = useRouter()
+  const session = useSession()
 
   return (
     <header className="flex justify-between h-20 items-center mx-4  ">
@@ -21,7 +23,9 @@ export function Header() {
           <h3 className="text-medium text-gray-500">Cariacica</h3>
         </div>
         <h1 className="text-xl text-primary-900 font-bold ">
-          Welder Fernandes
+          {session && session?.data?.user?.name
+            ? session?.data?.user?.name
+            : 'Bem vindo(a)'}
         </h1>
       </div>
       <div>
@@ -70,6 +74,7 @@ export function Header() {
                 </li>
                 <li className="pt-6">
                   <Button
+                    onClick={() => signOut()}
                     className="w-full text-primary-900 text-md flex gap-4 ring-2 ring-primary-600"
                     variant="outline"
                   >

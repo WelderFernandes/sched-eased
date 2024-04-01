@@ -11,13 +11,9 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel'
-import { EmblaOptionsType } from 'embla-carousel'
+// import { EmblaOptionsType } from 'embla-carousel'
 
 export default function Home() {
-  const slideOptions: EmblaOptionsType = {
-    dragFree: true,
-    container: '.embla',
-  }
   return (
     <div className="px-4 py-5 flex flex-col ">
       <Card className=" bg-transparent relative shadow-inherit">
@@ -64,7 +60,7 @@ export default function Home() {
         Mais recomendado
       </h1>
 
-      <Carousel opts={slideOptions}>
+      <Carousel>
         <CarouselContent>
           <CarouselItem>
             <div className="relative w-full rounded-xl">

@@ -16,8 +16,8 @@ export function BookingItem({ className, ...props }: ComponentProps<'div'>) {
         <Image
           src="/booking-item-image.png"
           alt="nextui logo"
-          width={500}
-          height={500}
+          width={72}
+          height={72}
           className="w-fit h-fit p-0 m-0"
         />
         <div className="flex flex-col">

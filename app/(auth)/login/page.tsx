@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -25,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
+import { signIn } from 'next-auth/react'
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
 
@@ -55,8 +57,6 @@ export default function Login() {
     resolver: zodResolver(schema),
   })
 
-  console.log({ errors, register })
-
   return (
     <div className="flex flex-col p-0 m-0">
       <div className="min-h-[277px]  top-0 left-0 right-0">
@@ -69,11 +69,11 @@ export default function Login() {
           className="absolute w-full top-0 left-0 right-0"
         />
         <Button
-          variant="default"
-          className="relative top-3 left-3 bg-primary-900"
+          variant="ghost"
+          className="relative top-3 left-3 "
           onClick={handleBackHomePage}
         >
-          <FaArrowLeftLong size={24} className="text-white " />
+          <FaArrowLeftLong size={24} className="text-primary-900" />
         </Button>
         <div className="flex item-center align-middle justify-center">
           <Image
@@ -96,10 +96,10 @@ export default function Login() {
             conta
           </CardDescription>
         </CardHeader>
-        <CardContent className="w-full p-0 m-0 ">
+        <CardContent className="w-full p-0 m-0 px-5 py-6 gap-5 flex flex-col">
           <form
             onSubmit={handleSubmit((data) => console.log(data))}
-            className="w-full px-5 py-6 flex flex-col gap-5"
+            className="w-full flex flex-col gap-5"
           >
             <div className="grid w-full items-center gap-1.5">
               <Label
@@ -201,6 +201,25 @@ export default function Login() {
             </Link>
           </p>
         </CardContent>
+        <CardFooter className="w-full flex flex-col">
+          <Button
+            onClick={() => signIn('google', { callbackUrl: '/' })}
+            aria-label="Sign in with Google"
+            className="flex items-center bg-white border border-button-border-light rounded-md p-0.5 pr-3 h-12"
+          >
+            <div className="flex items-center justify-center bg-white w-9 h-9 rounded-l">
+              <Image
+                src="/google.png"
+                alt="Google logo"
+                width={20}
+                height={20}
+              />
+            </div>
+            <span className="text-md text-google-text-gray tracking-wider">
+              Entrar com Google
+            </span>
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   )
