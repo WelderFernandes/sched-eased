@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Establishment" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "address" DROP NOT NULL,
+ALTER COLUMN "imageUrl" DROP NOT NULL;

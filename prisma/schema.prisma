@@ -41,14 +41,73 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  role          String?
-  accounts      Account[]
-  sessions      Session[]
+  id              String         @id @default(cuid())
+  name            String?
+  email           String?        @unique
+  emailVerified   DateTime?
+  image           String?
+  role            String?
+  accounts        Account[]
+  sessions        Session[]
+  Establishment   Establishment? @relation(fields: [establishmentId], references: [id])
+  establishmentId String?
+  Booking         Booking[]
+}
+
+model Establishment {
+  id                      String                 @id @default(uuid())
+  name                    String?
+  address                 String?
+  imageUrl                String?
+  team                    User[]
+  services                Service[]
+  bookings                Booking[]
+  EstablishmentCategory   EstablishmentCategory? @relation(fields: [establishmentCategoryId], references: [id])
+  establishmentCategoryId String?
+}
+
+model EstablishmentCategory {
+  id            String          @id @default(uuid())
+  name          String
+  Establishment Establishment[]
+}
+
+model Service {
+  id                String           @id @default(uuid())
+  name              String
+  price             Decimal          @db.Decimal(10, 2)
+  establishmentId   String
+  establishment     Establishment    @relation(fields: [establishmentId], references: [id])
+  description       String
+  bookings          Booking[]
+  imageUrl          String
+  ServiceCategoty   ServiceCategoty? @relation(fields: [serviceCategotyId], references: [id])
+  serviceCategotyId String?
+}
+
+model ServiceCategoty {
+  id      String    @id @default(uuid())
+  name    String
+  Service Service[]
+}
+
+model Booking {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  serviceId       String
+  service         Service       @relation(fields: [serviceId], references: [id])
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  date            DateTime
+  status          BookingStatus @relation(fields: [statusId], references: [id])
+  statusId        String
+}
+
+model BookingStatus {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Booking Booking[]
 }
 
 model VerificationToken {
