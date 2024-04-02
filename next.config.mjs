@@ -5,7 +5,7 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
-    dirs: ['./components/ui/*'],
+    dirs: ['./src/components/ui/*'],
   },
 }
 
