@@ -146,9 +146,6 @@ async function seedDatabase() {
 
     const establishments = []
 
-    // for (let i = 0; i < establishmentCategory.length; i++) {
-
-    // }
     for (let i = 0; i < 10; i++) {
       const name = creativeNames[i]
       const address = addresses[i]

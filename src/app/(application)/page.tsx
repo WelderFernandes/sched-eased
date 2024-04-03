@@ -1,19 +1,33 @@
+'use client'
 import Image from 'next/image'
 import { CgArrowTopRightR } from 'react-icons/cg'
 import { SearchBar } from './_components/searchBar'
 import { Card, CardContent } from '@/src/components/ui/card'
 import { Button } from '@/src/components/ui/button'
 import { Separator } from '@/src/components/ui/separator'
-import { BookingItem } from './_components/booking-item'
+import { EsblishmentItem } from './_components/esblishmentItem-item'
 import { FaLocationDot, FaStar } from 'react-icons/fa6'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/src/components/ui/carousel'
-// import { EmblaOptionsType } from 'embla-carousel'
+import { getEstablishments } from '@/src/actions/get-establishments'
+import { useEffect, useState } from 'react'
+import { Establishment } from '@prisma/client'
 
 export default function Home() {
+  const [establishment, setEstablishment] = useState<Establishment[]>([])
+
+  async function refreshEsblishment() {
+    const data = await getEstablishments(3)
+    setEstablishment(data)
+  }
+
+  useEffect(() => {
+    refreshEsblishment()
+  }, [])
+
   return (
     <div className="px-4 py-5 flex flex-col ">
       <Card className=" bg-transparent relative shadow-inherit">
@@ -51,10 +65,13 @@ export default function Home() {
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
         Loja mais próxima
       </h1>
-      <BookingItem className="mt-4" />
-      <BookingItem className="mt-4" />
-
-      <BookingItem className="mt-4" />
+      {establishment.map((establishment) => (
+        <EsblishmentItem
+          key={establishment.id}
+          className="mt-4"
+          esblishmentItem={establishment}
+        />
+      ))}
 
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight py-4">
         Mais recomendado
@@ -158,10 +175,14 @@ export default function Home() {
         </CarouselContent>
       </Carousel>
 
-      <BookingItem className="mt-4" />
-      <BookingItem className="mt-4" />
+      {establishment.map((establishment) => (
+        <EsblishmentItem
+          key={establishment.id}
+          className="mt-4"
+          esblishmentItem={establishment}
+        />
+      ))}
 
-      <BookingItem className="mt-4" />
       <div className="flex items-center align-middle justify-center pt-4">
         <Button
           variant="outline"
