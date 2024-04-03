@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // import { PrismaClient } from '@prisma/client'
 const { PrismaClient } = require('@prisma/client')
 
@@ -101,21 +102,35 @@ async function seedDatabase() {
       },
     ]
 
-    const establishment: string[] = [
-      'Pending',
-      'Confirmed',
-      'In progress',
-      'Completed',
-      'Cancelled',
+    const establishmentCategory: string[] = [
+      'Estilo de cortes de cabelo',
+      'Cílios sobrancelhas',
+      'Enchimentos injetáveis',
+      'Barbearia',
+      'Cuidados faciais com a pele',
+      'Massagens',
+      'Tatuagens e piercings',
+      'Extensões de cabelo',
+      'Serviços de unhas',
+      'Depilação',
+      'Outro',
     ]
 
-    const establishmentCategory: string[] = ['Haircut', 'Shave', 'Massage']
+    const bookingStatus = [
+      'Pendente',
+      'Rejeitado',
+      'Confirmado',
+      'Aprovado',
+      'Em andamento',
+      'Concluído',
+      'Cancelado',
+    ]
 
     try {
       await Promise.all(
-        establishment.map(async (status) => {
+        bookingStatus.map(async (status) => {
           console.log({ status })
-          await prisma.establishment.create({
+          await prisma.BookingStatus.create({
             data: {
               name: status,
             },
@@ -127,10 +142,13 @@ async function seedDatabase() {
       console.error('Error creating booking statuses:', error)
     }
 
-    console.log({ establishment })
-
     // Criar 10 barbearias com nomes e endereços fictícios
+
     const establishments = []
+
+    // for (let i = 0; i < establishmentCategory.length; i++) {
+
+    // }
     for (let i = 0; i < 10; i++) {
       const name = creativeNames[i]
       const address = addresses[i]
@@ -141,6 +159,16 @@ async function seedDatabase() {
           name,
           address,
           imageUrl,
+        },
+      })
+      await prisma.establishmentCategory.create({
+        data: {
+          name: establishmentCategory[i],
+          establishments: {
+            connect: {
+              id: establishment?.id,
+            },
+          },
         },
       })
 

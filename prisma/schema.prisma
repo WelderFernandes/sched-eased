@@ -62,14 +62,14 @@ model Establishment {
   team                    User[]
   services                Service[]
   bookings                Booking[]
-  EstablishmentCategory   EstablishmentCategory? @relation(fields: [establishmentCategoryId], references: [id])
+  establishmentCategory   EstablishmentCategory? @relation(fields: [establishmentCategoryId], references: [id])
   establishmentCategoryId String?
 }
 
 model EstablishmentCategory {
-  id            String          @id @default(uuid())
-  name          String
-  Establishment Establishment[]
+  id             String          @id @default(uuid())
+  name           String
+  establishments Establishment[]
 }
 
 model Service {
