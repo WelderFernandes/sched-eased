@@ -62,6 +62,7 @@ export default function Home() {
         <Separator />
       </Card>
       <SearchBar className="my-4" />
+
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
         Loja mais próxima
       </h1>
