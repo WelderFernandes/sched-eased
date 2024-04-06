@@ -5,7 +5,7 @@ import { SearchBar } from '../_components/searchBar'
 import { Card, CardContent } from '@/src/components/ui/card'
 import { Button } from '@/src/components/ui/button'
 import { Separator } from '@/src/components/ui/separator'
-import { EsblishmentItem } from '../_components/esblishmentItem-item'
+import { EsblishmentItem } from '../_components/establishmentItem-item'
 import { FaLocationDot, FaStar } from 'react-icons/fa6'
 import {
   Carousel,
