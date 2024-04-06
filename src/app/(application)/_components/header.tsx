@@ -56,10 +56,12 @@ export function Header() {
           } else if (result.state === 'prompt') {
             // Se a permissão não foi decidida ainda, você pode pedir ao usuário
             // navigator.geolocation.getCurrentPosition(successCallback);
-            setOpen(true)
+            // ##TODO
+            // Lembrar de voltar para True
+            setOpen(false)
           } else if (result.state === 'denied') {
             // Se a permissão foi negada, você pode instruir o usuário a habilitar a permissão
-            setOpen(true)
+            setOpen(false)
           }
           result.onchange = function () {
             console.log(result.state)

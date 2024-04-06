@@ -1,5 +1,6 @@
 import { Establishment } from '@prisma/client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { ComponentProps } from 'react'
 import { FaLocationDot, FaStar } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
@@ -21,7 +22,10 @@ export function EsblishmentItem({
       )}
       {...props}
     >
-      <div className="flex gap-3 items-center h-[100px] p-0 m-0">
+      <Link
+        href={`/establishment/${esblishmentItem.id?.trim()}`}
+        className="flex gap-3 items-center h-[100px] p-0 m-0"
+      >
         <div className="w-32 h-24 bg-cover rounded-md overflow-hidden">
           <Image
             src={esblishmentItem.imageUrl || '/logo.png'}
@@ -42,7 +46,7 @@ export function EsblishmentItem({
             <p className="text-sm text-gray-500">4.3</p>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }
