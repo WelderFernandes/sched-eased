@@ -1,32 +1,27 @@
-'use client'
 import Image from 'next/image'
 import { CgArrowTopRightR } from 'react-icons/cg'
 import { SearchBar } from '../_components/searchBar'
 import { Card, CardContent } from '@/src/components/ui/card'
 import { Button } from '@/src/components/ui/button'
 import { Separator } from '@/src/components/ui/separator'
-import { EsblishmentItem } from '../_components/establishmentItem-item'
 import { FaLocationDot, FaStar } from 'react-icons/fa6'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/src/components/ui/carousel'
-import { getEstablishments } from '@/src/actions/get-establishments'
-import { useEffect, useState } from 'react'
-import { Establishment } from '@prisma/client'
+import db from '@/src/lib/prisma'
+import { EsblishmentItem } from '../_components/establishmentItem-item'
 
-export default function Home() {
-  const [establishment, setEstablishment] = useState<Establishment[]>([])
+export default async function Home() {
+  const [establishmentData] = await Promise.all([
+    db.establishment.findMany({
+      take: 3,
+      orderBy: { name: 'asc' },
+    }),
+  ])
 
-  async function refreshEsblishment() {
-    const data = await getEstablishments(3)
-    setEstablishment(data)
-  }
-
-  useEffect(() => {
-    refreshEsblishment()
-  }, [])
+  console.log('🚀 ~ Home ~ establishmentData:', establishmentData)
 
   return (
     <div className="px-4 py-5 flex flex-col ">
@@ -66,11 +61,11 @@ export default function Home() {
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
         Loja mais próxima
       </h1>
-      {establishment.map((establishment) => (
+      {establishmentData.map((data) => (
         <EsblishmentItem
-          key={establishment.id}
+          key={data.id}
           className="mt-4"
-          esblishmentItem={establishment}
+          esblishmentItem={data}
         />
       ))}
 
@@ -176,7 +171,7 @@ export default function Home() {
         </CarouselContent>
       </Carousel>
 
-      {establishment.map((establishment) => (
+      {establishmentData.map((establishment) => (
         <EsblishmentItem
           key={establishment.id}
           className="mt-4"
