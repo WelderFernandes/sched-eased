@@ -56,12 +56,13 @@ model User {
 
 model Establishment {
   id                      String                 @id @default(uuid())
-  name                    String?
+  name                    String
   address                 String?
   imageUrl                String?
   team                    User[]
   services                Service[]
   bookings                Booking[]
+  description             String?
   establishmentCategory   EstablishmentCategory? @relation(fields: [establishmentCategoryId], references: [id])
   establishmentCategoryId String?
 }

@@ -126,6 +126,19 @@ async function seedDatabase() {
       'Cancelado',
     ]
 
+    const barberDescriptions = [
+      'Barbearia moderna com barbeiros experientes. Oferecemos cortes de cabelo e barbas de alta qualidade.',
+      'Barbearia tradicional especializada em cortes de cabelo clássicos e atendimento personalizado.',
+      'Barbearia de luxo com serviços exclusivos e ambiente sofisticado.',
+      'Barbearia vintage com cortes de cabelo e barbas no estilo clássico.',
+      'Barbearia familiar com preços acessíveis e serviços de qualidade.',
+      'Barbearia esportiva com TVs de alta definição e cortes de cabelo animados.',
+      'Barbearia eco-amigável com produtos orgânicos e tratamentos capilares naturais.',
+      'Barbearia de alto padrão com serviços exclusivos e atendimento personalizado.',
+      'Barbearia com foco na comunidade e ambiente amigável e acolhedor.',
+      'Barbearia expressa com cortes de cabelo e barbas rápidos e eficientes.',
+    ]
+
     try {
       await Promise.all(
         bookingStatus.map(async (status) => {
@@ -150,12 +163,14 @@ async function seedDatabase() {
       const name = creativeNames[i]
       const address = addresses[i]
       const imageUrl = images[i]
+      const description = barberDescriptions[i]
 
       const establishment = await prisma.establishment.create({
         data: {
           name,
           address,
           imageUrl,
+          description,
         },
       })
       await prisma.establishmentCategory.create({
