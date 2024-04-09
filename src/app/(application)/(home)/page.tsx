@@ -12,6 +12,8 @@ import {
 } from '@/src/components/ui/carousel'
 import db from '@/src/lib/prisma'
 import { EsblishmentItem } from '../_components/establishmentItem-item'
+import { Suspense } from 'react'
+import { EstablishmentItemLoading } from '../_components/establishmentitem-loading'
 
 export default async function Home() {
   const [establishmentData] = await Promise.all([
@@ -61,13 +63,15 @@ export default async function Home() {
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
         Loja mais próxima
       </h1>
-      {establishmentData.map((data) => (
-        <EsblishmentItem
-          key={data.id}
-          className="mt-4"
-          esblishmentItem={data}
-        />
-      ))}
+      <Suspense fallback={<EstablishmentItemLoading />}>
+        {establishmentData.map((data) => (
+          <EsblishmentItem
+            key={data.id}
+            className="mt-4"
+            esblishmentItem={data}
+          />
+        ))}
+      </Suspense>
 
       <h1 className="text-xl font-extrabold text-gray-900 tracking-tight py-4">
         Mais recomendado

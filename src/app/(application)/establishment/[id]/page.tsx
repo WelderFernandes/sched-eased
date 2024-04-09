@@ -11,8 +11,10 @@ import db from '@/src/lib/prisma'
 import { FormatMoney } from '@/src/lib/utils'
 import { Calendar, Heart, MapPinIcon, Share2, StarIcon } from 'lucide-react'
 import Image from 'next/image'
+import { Suspense } from 'react'
 import {} from 'react-icons/bs'
 import { FaServicestack } from 'react-icons/fa6'
+import { EstablishmentItemLoading } from '../../_components/establishmentitem-loading'
 
 interface EstablishmentProps {
   params: {
@@ -108,7 +110,7 @@ export default async function EstablishmentDetails({
           </Button>
         </div>
       </div>
-      <Tabs defaultValue="about">
+      <Tabs defaultValue="services">
         <ScrollArea className="w-full">
           <TabsList className="w-full h-14 gap-4 px-6 bg-primary-50 cursor-pointer">
             <TabsTrigger
@@ -223,27 +225,31 @@ export default async function EstablishmentDetails({
         <TabsContent value="services" className="w-full py-3 px-5">
           <h1 className="text-gray-900 font-semibold pb-5">Nossos serviços</h1>
           <div className="flex flex-col gap-4">
-            {esblishment?.services?.map((service) => (
-              <div className="flex" key={service.id}>
-                <Avatar>
-                  <AvatarImage src={service.imageUrl} />
-                  <AvatarFallback>
-                    <FaServicestack size={18} />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex justify-between w-full align-middle">
-                  <div className="flex flex-col align-middle justify-center px-2 ">
-                    <h1 className="font-bold text-gray-900">{service.name}</h1>
-                    <p className="text-sm text-gray-500 truncate whitespace-nowrap tracking-tight w-60">
-                      {service.description}
-                    </p>
-                  </div>
-                  <div className="flex align-middle items-center justify-center gap-2 text-gray-900 font-semibold">
-                    {FormatMoney(service.price.toNumber())}
+            <Suspense fallback={<EstablishmentItemLoading />}>
+              {esblishment?.services?.map((service) => (
+                <div className="flex" key={service.id}>
+                  <Avatar>
+                    <AvatarImage src={service.imageUrl} />
+                    <AvatarFallback>
+                      <FaServicestack size={18} />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex justify-between w-full align-middle">
+                    <div className="flex flex-col align-middle justify-center px-2 ">
+                      <h1 className="font-bold text-gray-900">
+                        {service.name}
+                      </h1>
+                      <p className="text-sm text-gray-500 truncate whitespace-nowrap tracking-tight w-60">
+                        {service.description}
+                      </p>
+                    </div>
+                    <div className="flex align-middle items-center justify-center gap-2 text-gray-900 font-semibold">
+                      {FormatMoney(service.price.toNumber())}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </Suspense>
           </div>
         </TabsContent>
         <TabsContent value="schedule">Agenda.</TabsContent>
