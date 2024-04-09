@@ -8,11 +8,11 @@ import {
   TabsTrigger,
 } from '@/src/components/ui/tabs'
 import db from '@/src/lib/prisma'
+import { FormatMoney } from '@/src/lib/utils'
 import { Calendar, Heart, MapPinIcon, Share2, StarIcon } from 'lucide-react'
 import Image from 'next/image'
 import {} from 'react-icons/bs'
-import { FaWhatsapp } from 'react-icons/fa6'
-import { IoLogoWhatsapp } from 'react-icons/io5'
+import { FaServicestack } from 'react-icons/fa6'
 
 interface EstablishmentProps {
   params: {
@@ -30,6 +30,7 @@ export default async function EstablishmentDetails({
       include: {
         services: true,
         establishmentCategory: true,
+        team: true,
       },
     }),
   ])
@@ -112,20 +113,20 @@ export default async function EstablishmentDetails({
           <TabsList className="w-full h-14 gap-4 px-6 bg-primary-50 cursor-pointer">
             <TabsTrigger
               value="about"
-              className="flex gap-2 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900 ring-offset-2 "
+              className="flex gap-2 data-[state=active]:text-primary-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900"
             >
               <Image
                 src="/about-icon.png"
                 width={24}
                 height={24}
-                className="w-4 h-4 "
+                className="w-4 h-4"
                 alt="Services"
               />{' '}
               Sobre nós
             </TabsTrigger>
             <TabsTrigger
               value="services"
-              className="flex gap-2 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900 ring-offset-2 "
+              className="flex gap-2 data-[state=active]:text-primary-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900"
             >
               <Image
                 src="/service-icon.png"
@@ -134,18 +135,18 @@ export default async function EstablishmentDetails({
                 className="w-4 h-4"
                 alt="Services"
               />
-              Serviços
+              {esblishment?.services.length} Serviços
             </TabsTrigger>
             <TabsTrigger
               value="schedule"
-              className="flex gap-2 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900 ring-offset-2 "
+              className="flex gap-2 data-[state=active]:text-primary-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900"
             >
               <Calendar size={18} className="text-gray-400" />
               Agenda
             </TabsTrigger>
             <TabsTrigger
               value="reviews"
-              className="flex gap-2 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900 ring-offset-2 "
+              className="flex gap-2 data-[state=active]:text-primary-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:ring-2 ring-primary-900"
             >
               <StarIcon size={18} className="text-gray-400" />
               Avaliações
@@ -219,7 +220,32 @@ export default async function EstablishmentDetails({
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="services">services</TabsContent>
+        <TabsContent value="services" className="w-full py-3 px-5">
+          <h1 className="text-gray-900 font-semibold pb-5">Nossos serviços</h1>
+          <div className="flex flex-col gap-4">
+            {esblishment?.services?.map((service) => (
+              <div className="flex" key={service.id}>
+                <Avatar>
+                  <AvatarImage src={service.imageUrl} />
+                  <AvatarFallback>
+                    <FaServicestack size={18} />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex justify-between w-full align-middle">
+                  <div className="flex flex-col align-middle justify-center px-2 ">
+                    <h1 className="font-bold text-gray-900">{service.name}</h1>
+                    <p className="text-sm text-gray-500 truncate whitespace-nowrap tracking-tight w-60">
+                      {service.description}
+                    </p>
+                  </div>
+                  <div className="flex align-middle items-center justify-center gap-2 text-gray-900 font-semibold">
+                    {FormatMoney(service.price.toNumber())}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
         <TabsContent value="schedule">Agenda.</TabsContent>
         <TabsContent value="reviews">Reviews</TabsContent>
       </Tabs>
