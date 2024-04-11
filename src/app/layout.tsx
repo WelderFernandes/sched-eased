@@ -25,7 +25,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <AuthProvider>
-        <body>{children}</body>
+        <body className="max-w-screen-sm mx-auto ring-1 ring-gray-200">
+          {children}
+        </body>
       </AuthProvider>
     </html>
   )

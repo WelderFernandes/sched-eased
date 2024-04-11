@@ -15,6 +15,11 @@ import { Suspense } from 'react'
 import {} from 'react-icons/bs'
 import { FaServicestack } from 'react-icons/fa6'
 import { EstablishmentItemLoading } from '../../_components/establishmentitem-loading'
+import { UserRoot } from '../../_components/user/user-root'
+import { UserContent } from '../../_components/user/user-content'
+import { UserAvatar } from '../../_components/user/user-avatar'
+import { UserRightItem } from '../../_components/user/user-right-tem'
+import Link from 'next/link'
 
 interface EstablishmentProps {
   params: {
@@ -37,7 +42,6 @@ export default async function EstablishmentDetails({
     }),
   ])
 
-  console.log({ esblishment })
   return (
     <div>
       <div className="flex flex-col px-6">
@@ -110,7 +114,7 @@ export default async function EstablishmentDetails({
           </Button>
         </div>
       </div>
-      <Tabs defaultValue="services">
+      <Tabs defaultValue="about">
         <ScrollArea className="w-full">
           <TabsList className="w-full h-14 gap-4 px-6 bg-primary-50 cursor-pointer">
             <TabsTrigger
@@ -171,7 +175,16 @@ export default async function EstablishmentDetails({
             <span className="font-bold">09.00 am - 06.00 pm </span>
           </div>
           <h1 className="font-bold py-4">Nosso Time</h1>
-          <div className="flex flex-col gap-4">
+          <UserRoot>
+            <UserAvatar
+              imageUrl="https://github.com/welderfernandes.png"
+              alt="Welder Fernandes"
+            />
+            <UserContent title="Co-fundador" subTitle="Welder Fernandes">
+              <UserRightItem />
+            </UserContent>
+          </UserRoot>
+          {/* <div className="flex flex-col gap-4">
             <div className="flex">
               <Avatar>
                 <AvatarImage src="https://github.com/welderfernandes.png" />
@@ -220,7 +233,7 @@ export default async function EstablishmentDetails({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </TabsContent>
         <TabsContent value="services" className="w-full py-3 px-5">
           <h1 className="text-gray-900 font-semibold pb-5">Nossos serviços</h1>
@@ -255,14 +268,13 @@ export default async function EstablishmentDetails({
         <TabsContent value="schedule">Agenda.</TabsContent>
         <TabsContent value="reviews">Reviews</TabsContent>
       </Tabs>
-      <Button
-        variant="default"
-        className="h-16 bg-primary-900 text-white w-full px-auto "
-      >
-        <div className="flex flex-col gap-2 items-center ">
-          Fazer uma reserva
-        </div>
-      </Button>
+      <div className="px-6">
+        <Link href={`/establishment/${esblishment?.id}/appointment`}>
+          <Button className="h-14 bg-primary-900 text-white w-full text-xl">
+            Fazer uma reserva
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

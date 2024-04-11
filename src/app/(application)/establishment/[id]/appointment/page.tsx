@@ -10,7 +10,6 @@ export default function Appointment() {
     <div className="flex flex-col px-6">
       <Calendar
         locale={ptBR}
-        mode="single"
         fromDate={addDays(new Date(), 0)}
         selected={date}
         onSelect={setDate}
