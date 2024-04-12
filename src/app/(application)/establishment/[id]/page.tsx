@@ -21,7 +21,7 @@ import { UserAvatar } from '../../_components/user/user-avatar'
 import { UserRightItem } from '../../_components/user/user-right-tem'
 import Link from 'next/link'
 
-interface EstablishmentProps {
+export interface EstablishmentProps {
   params: {
     id?: string
   }
