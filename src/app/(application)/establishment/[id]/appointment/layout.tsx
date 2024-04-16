@@ -9,7 +9,7 @@ export default function EstablishmentLayout({
 }>) {
   return (
     <div>
-      <Header title="Agendamento" />
+      <Header title="Agendar serviço" />
       {children}
     </div>
   )

@@ -1,16 +1,17 @@
 'use client'
 import { Calendar } from '@/src/components/ui/calendar'
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { ptBR } from 'date-fns/locale'
 import { addDays } from 'date-fns'
+import { Booking, Service } from '@prisma/client'
 import { GetServicesForEsblishment } from '@/src/actions/service-action'
 import { ServiceItem } from '../../../_components/service-item'
-import { Booking, Service } from '@prisma/client'
 import { ServiceLoadingItem } from '../../../_components/service-loading-item'
 import { generateDayTimeList } from '@/src/app/helpers/hours'
+import { getDayBookings } from '@/src/actions/get-day-booking'
 import { Button } from '@/src/components/ui/button'
 import { cn } from '@/src/lib/utils'
-import { Wallet2Icon } from 'lucide-react'
+import { Wallet } from 'lucide-react'
 
 interface Appointment {
   params: {
@@ -18,20 +19,34 @@ interface Appointment {
   }
 }
 export default function Appointment({ params }: Appointment) {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<Date>(new Date())
   const [services, setservices] = useState<Service[]>()
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [hour, setHour] = useState<string>('')
 
+  const handleHourClick = (time: string) => {
+    setHour(time)
+  }
+
   useEffect(() => {
     async function RefreshServices() {
-      setDate(date as Date)
       const response = await GetServicesForEsblishment(params.id)
       console.log('🚀 ~ RefreshServices ~ response:', response)
       setservices(response)
     }
+
+    if (!date) {
+      return
+    }
+
+    const refreshAvailableHours = async () => {
+      const _dayBookings = await getDayBookings(params.id, date)
+      setDayBookings(_dayBookings)
+    }
+
+    refreshAvailableHours()
     RefreshServices()
-  }, [params.id, date])
+  }, [date, params.id])
 
   const timeList = useMemo(() => {
     if (!date) {
@@ -57,6 +72,18 @@ export default function Appointment({ params }: Appointment) {
     })
   }, [date, dayBookings])
 
+  async function Services() {
+    return (
+      <>
+        {services?.map((service) => (
+          <div className="flex" key={service.id}>
+            <ServiceItem service={service} />
+          </div>
+        ))}
+      </>
+    )
+  }
+
   return (
     <div className="px-6 h-screen">
       <Calendar
@@ -64,7 +91,7 @@ export default function Appointment({ params }: Appointment) {
         fromDate={addDays(new Date(), 0)}
         selected={date}
         mode="single"
-        onSelect={(value) => setDate(value)}
+        onSelect={(date) => setDate(date as Date)}
         className="rounded-md border shadow"
         styles={{
           caption_end: {
@@ -75,23 +102,16 @@ export default function Appointment({ params }: Appointment) {
 
       <h1 className="text-md font-semibold pt-5">Escolha o serviço</h1>
       <div className="flex gap-4 mt-4 h-max">
-        {services !== undefined ? (
-          services?.map((service) => (
-            <div className="flex" key={service.id}>
-              <ServiceItem service={service} />
-            </div>
-          ))
-        ) : (
-          <ServiceLoadingItem repetitions={10} />
-        )}
+        <Suspense fallback={<ServiceLoadingItem repetitions={7} />}>
+          <Services />
+        </Suspense>
       </div>
-
       <h1 className="text-md font-semibold pt-5">Horario disponivel</h1>
       <div className="flex gap-4 mt-4 flex-wrap">
         {timeList.map((time) => (
           <Button
             key={time}
-            onClick={() => setHour(time)}
+            onClick={() => handleHourClick(time)}
             variant={hour === time ? 'default' : 'outline'}
             className={cn(
               'rounded-md border-primary-900 text-primary-900 hover:bg-primary-900 hover:text-white ',
@@ -102,12 +122,23 @@ export default function Appointment({ params }: Appointment) {
           </Button>
         ))}
       </div>
-      <div className="w-full py-7">
+      <h1 className="text-md font-semibold pt-5">Resumo do pagamento</h1>
+      <div className="flex flex-col flex-1 py-4 border-b-2 border-dashed ">
+        <div className="flex align-middle justify-between w-full text-gray-900 font-medium">
+          <span>Basic haircut</span>
+          <span>R$ 25,00</span>
+        </div>
+      </div>
+      <div className="flex align-middle justify-between w-full text-gray-900 font- font-bold py-4">
+        <span>Total</span>
+        <span>R$ 25,00</span>
+      </div>
+      <div className="w-full">
         <Button
           variant="default"
           className="w-full bg-primary-900 text-white font-bold h-14 rounded-md hover:bg-primary-800"
         >
-          Reservar <Wallet2Icon className="ml-2" />
+          Reservar <Wallet className="ml-2" />
         </Button>
       </div>
     </div>
