@@ -1,6 +1,6 @@
 'use client'
 import { ReactNode } from 'react'
-import { Header } from '../../components/header'
+import { Header } from '../../establishment/components/header'
 
 export default function EstablishmentLayout({
   children,

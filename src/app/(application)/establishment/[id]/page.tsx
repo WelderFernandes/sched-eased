@@ -269,7 +269,7 @@ export default async function EstablishmentDetails({
         <TabsContent value="reviews">Reviews</TabsContent>
       </Tabs>
       <div className="px-6">
-        <Link href={`/establishment/${esblishment?.id}/appointment`}>
+        <Link href={`/appointment/${esblishment?.id}`}>
           <Button className="h-14 bg-primary-900 text-white w-full text-xl">
             Fazer uma reserva
           </Button>
