@@ -1,13 +1,32 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar'
 import { Service } from '@prisma/client'
-import { FaServicestack } from 'react-icons/fa6'
+import { useState } from 'react'
+import { FaServicestack } from 'react-icons/fa'
+import { ImCheckmark } from 'react-icons/im'
 
-interface ServiceItemProps {
+type ServiceItemProps = {
   service: Service
+  selectedId?: string
 }
-export function ServiceItem({ service = 1 }: ServiceItemProps) {
+export function ServiceItem({ service, selectedId }: ServiceItemProps) {
+  const [selectedService, setSelectedService] = useState(false)
+  const [isCheked, setIsCheked] = useState(false)
+
+  function handleSeleted() {
+    setSelectedService(!selectedService)
+    setIsCheked(!isCheked)
+  }
   return (
-    <div className="flex w-20 flex-col items-center align-middle text-center">
+    <div
+      className="flex w-20 flex-col items-center align-middle text-center"
+      onClick={handleSeleted}
+    >
+      {isCheked && (
+        <div className="w-20 h-20 rounded-full bg-primary-500 opacity-60 flex items-center justify-center absolute z-50">
+          <ImCheckmark className="w-10 h-10 text-gray-900" />
+        </div>
+      )}
+      {selectedId}
       <Avatar className="w-20 h-20">
         <AvatarImage src={service.imageUrl} alt={service.name} />
         <AvatarFallback delayMs={600}>
@@ -19,7 +38,7 @@ export function ServiceItem({ service = 1 }: ServiceItemProps) {
         {new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
-        }).format(service.price)}
+        }).format(Number(service.price))}
       </p>
     </div>
   )

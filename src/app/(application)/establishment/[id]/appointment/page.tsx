@@ -22,12 +22,12 @@ export default function Appointment({ params }: Appointment) {
   const [services, setservices] = useState<Service[]>()
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [hour, setHour] = useState<string>('')
+  const [idServiceSelected, setIdServiceSelected] = useState<string[]>([])
 
   useEffect(() => {
     async function RefreshServices() {
       setDate(date as Date)
       const response = await GetServicesForEsblishment(params.id)
-      console.log('🚀 ~ RefreshServices ~ response:', response)
       setservices(response)
     }
     RefreshServices()
@@ -57,8 +57,27 @@ export default function Appointment({ params }: Appointment) {
     })
   }, [date, dayBookings])
 
+  function handleSeletedService(id: string) {
+    setIdServiceSelected((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((item) => item !== id)
+      }
+      return [...prev, id]
+    })
+  }
+
+  function handleSubmit() {
+    const data = {
+      idService: idServiceSelected,
+      idEstablishment: params.id,
+      date,
+      hour,
+    }
+    console.log({ data })
+  }
+
   return (
-    <div className="px-6 h-screen">
+    <form className="px-6 h-screen">
       <Calendar
         locale={ptBR}
         fromDate={addDays(new Date(), 0)}
@@ -72,12 +91,15 @@ export default function Appointment({ params }: Appointment) {
           },
         }}
       />
-
       <h1 className="text-md font-semibold pt-5">Escolha o serviço</h1>
       <div className="flex gap-4 mt-4 h-max">
         {services !== undefined ? (
           services?.map((service) => (
-            <div className="flex" key={service.id}>
+            <div
+              className="flex"
+              key={service.id}
+              onClick={() => handleSeletedService(service.id)}
+            >
               <ServiceItem service={service} />
             </div>
           ))
@@ -104,12 +126,13 @@ export default function Appointment({ params }: Appointment) {
       </div>
       <div className="w-full py-7">
         <Button
+          onSubmit={handleSubmit}
           variant="default"
           className="w-full bg-primary-900 text-white font-bold h-14 rounded-md hover:bg-primary-800"
         >
           Reservar <Wallet2Icon className="ml-2" />
         </Button>
       </div>
-    </div>
+    </form>
   )
 }
