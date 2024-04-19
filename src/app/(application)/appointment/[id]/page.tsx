@@ -2,15 +2,18 @@
 import { Calendar } from '@/src/components/ui/calendar'
 import { useEffect, useMemo, useState } from 'react'
 import { ptBR } from 'date-fns/locale'
-import { addDays } from 'date-fns'
+import { addDays, setHours, setMinutes } from 'date-fns'
 import { GetServicesForEsblishment } from '@/src/actions/service-action'
 import { ServiceItem } from '../../_components/service-item'
-import { Booking, Service } from '@prisma/client'
+import { Booking, Service, User } from '@prisma/client'
 import { ServiceLoadingItem } from '../../_components/service-loading-item'
 import { generateDayTimeList } from '@/src/app/helpers/hours'
 import { Button } from '@/src/components/ui/button'
 import { cn } from '@/src/lib/utils'
-import { Wallet2Icon } from 'lucide-react'
+import { Loader2, Wallet2Icon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { CreateBooking } from '@/src/actions/booking-action'
+import { getDayBookings } from '@/src/actions/get-day-booking'
 
 interface Appointment {
   params: {
@@ -18,11 +21,14 @@ interface Appointment {
   }
 }
 export default function Appointment({ params }: Appointment) {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<string | Date>(new Date())
   const [services, setservices] = useState<Service[]>()
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [hour, setHour] = useState<string>('')
   const [idServiceSelected, setIdServiceSelected] = useState<string[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const { data } = useSession()
 
   useEffect(() => {
     async function RefreshServices() {
@@ -30,6 +36,12 @@ export default function Appointment({ params }: Appointment) {
       const response = await GetServicesForEsblishment(params.id)
       setservices(response)
     }
+    async function refreshAvailableHours() {
+      const _dayBookings = await getDayBookings(params.id, date as Date)
+      setDayBookings(_dayBookings)
+    }
+
+    refreshAvailableHours()
     RefreshServices()
   }, [params.id, date])
 
@@ -38,7 +50,7 @@ export default function Appointment({ params }: Appointment) {
       return []
     }
 
-    return generateDayTimeList(date).filter((time) => {
+    return generateDayTimeList(date as Date).filter((time) => {
       const timeHour = Number(time.split(':')[0])
       const timeMinutes = Number(time.split(':')[1])
 
@@ -65,25 +77,45 @@ export default function Appointment({ params }: Appointment) {
       return [...prev, id]
     })
   }
+  console.log({ loading, idServiceSelected })
 
-  function handleSubmit() {
-    const data = {
-      idService: idServiceSelected,
-      idEstablishment: params.id,
-      date,
-      hour,
+  async function handleSubmit() {
+    setLoading(true)
+    try {
+      if (!hour || !date || !data?.user) {
+        return
+      }
+      const dateHour = Number(hour.split(':')[0])
+      const dateMinutes = Number(hour.split(':')[1])
+      const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
+
+      // idServiceSelected.map(async (serviceId) => {
+      await CreateBooking({
+        date: newDate,
+        userId: (data.user as User).id,
+        establishmentId: params.id,
+        serviceId: idServiceSelected[0],
+        price:
+          services?.find((service) => service.id === idServiceSelected[0])
+            ?.price || 0,
+        statusId: 'Pendente',
+      })
+      // })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
     }
-    console.log({ data })
   }
 
   return (
-    <form className="px-6 h-screen">
+    <div className="px-6 h-screen">
       <Calendar
         locale={ptBR}
         fromDate={addDays(new Date(), 0)}
-        selected={date}
+        selected={date as Date}
         mode="single"
-        onSelect={(value) => setDate(value)}
+        onSelect={(value) => setDate(value as Date)}
         className="rounded-md border shadow"
         styles={{
           caption_end: {
@@ -126,13 +158,15 @@ export default function Appointment({ params }: Appointment) {
       </div>
       <div className="w-full py-7">
         <Button
-          onSubmit={handleSubmit}
+          disabled={loading}
+          onClick={() => handleSubmit()}
           variant="default"
           className="w-full bg-primary-900 text-white font-bold h-14 rounded-md hover:bg-primary-800"
         >
+          {loading && <Loader2 className="mr-2 h-6 w-6 animate-spin" />}
           Reservar <Wallet2Icon className="ml-2" />
         </Button>
       </div>
-    </form>
+    </div>
   )
 }

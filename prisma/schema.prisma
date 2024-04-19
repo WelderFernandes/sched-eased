@@ -80,10 +80,10 @@ model Service {
   establishmentId   String
   establishment     Establishment    @relation(fields: [establishmentId], references: [id])
   description       String
-  bookings          Booking[]
   imageUrl          String
   ServiceCategoty   ServiceCategoty? @relation(fields: [serviceCategotyId], references: [id])
   serviceCategotyId String?
+  Booking           Booking[]
 }
 
 model ServiceCategoty {
@@ -93,16 +93,16 @@ model ServiceCategoty {
 }
 
 model Booking {
-  id              String        @id @default(uuid())
+  id              String         @id @default(uuid())
   userId          String
-  user            User          @relation(fields: [userId], references: [id])
+  user            User           @relation(fields: [userId], references: [id])
+  services        Service        @relation(fields: [serviceId], references: [id])
   serviceId       String
-  service         Service       @relation(fields: [serviceId], references: [id])
   establishmentId String
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishment   Establishment  @relation(fields: [establishmentId], references: [id])
   date            DateTime
-  status          BookingStatus @relation(fields: [statusId], references: [id])
-  statusId        String
+  status          BookingStatus? @relation(fields: [statusId], references: [id])
+  statusId        String?
 }
 
 model BookingStatus {

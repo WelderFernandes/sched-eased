@@ -10,7 +10,15 @@ export async function GetServicesForEsblishment(id: string) {
   console.log({ service, id })
   return service
 }
-export async function GetServices() {
-  const services = await db.service.findMany()
+export async function GetServices(id: string[]) {
+  const services = await db.service.findMany({
+    where: {
+      id: {
+        in: id,
+      },
+    },
+  })
+  console.log({ services })
+
   return services
 }
