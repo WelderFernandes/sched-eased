@@ -12,9 +12,9 @@ export default function EstablishmentAddress({
   ...props
 }: EstablishmentAddressProps) {
   return (
-    <div {...props} className={cn('flex gap-1 items-center', className || '')}>
+    <div {...props} className={cn('flex gap-1 items-center')}>
       <FaLocationDot size={14} className="text-red-600" />
-      <p className="text-sm text-white-900">{children}</p>
+      <p className={cn('text-sm text-white-900', className)}>{children}</p>
     </div>
   )
 }

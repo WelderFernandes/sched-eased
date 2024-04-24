@@ -13,8 +13,8 @@ export function EstablishmentRoot({
 }: EstablishmentRootProps) {
   return (
     <div
-      className={cn('rounded-md m-4 text-white-900 flex gap-4', className)}
       {...props}
+      className={cn('rounded-md m-4 text-white-900 flex gap-4', className)}
     >
       {children}
     </div>
