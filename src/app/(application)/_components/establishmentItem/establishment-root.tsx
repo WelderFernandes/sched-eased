@@ -1,4 +1,5 @@
 'use client'
+import { cn } from '@/src/lib/utils'
 import { ComponentProps, ReactNode } from 'react'
 
 interface EstablishmentRootProps extends ComponentProps<'div'> {
@@ -11,7 +12,10 @@ export function EstablishmentRoot({
   ...props
 }: EstablishmentRootProps) {
   return (
-    <div className={className} {...props}>
+    <div
+      className={cn('rounded-md m-4 text-white-900 flex gap-4', className)}
+      {...props}
+    >
       {children}
     </div>
   )

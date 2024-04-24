@@ -11,15 +11,14 @@ import db from '@/src/lib/prisma'
 import { FormatMoney } from '@/src/lib/utils'
 import { Calendar, Heart, MapPinIcon, Share2, StarIcon } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Suspense } from 'react'
-import {} from 'react-icons/bs'
 import { FaServicestack } from 'react-icons/fa6'
 import { EstablishmentItemLoading } from '../../_components/establishmentitem-loading'
-import { UserRoot } from '../../_components/user/user-root'
-import { UserContent } from '../../_components/user/user-content'
 import { UserAvatar } from '../../_components/user/user-avatar'
+import { UserContent } from '../../_components/user/user-content'
 import { UserRightItem } from '../../_components/user/user-right-tem'
-import Link from 'next/link'
+import { UserRoot } from '../../_components/user/user-root'
 
 export interface EstablishmentProps {
   params: {
@@ -274,7 +273,7 @@ export default async function EstablishmentDetails({
       </Tabs>
       <div className="px-6 pb-6">
         <Link href={`/appointment/${esblishment?.id}`}>
-          <Button className="h-14  bg-primary-900 text-white w-full text-xl">
+          <Button className="h-14  bg-primary-900 text-white-900 w-full text-xl">
             Fazer uma reserva
           </Button>
         </Link>

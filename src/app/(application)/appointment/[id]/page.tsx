@@ -1,20 +1,20 @@
 'use client'
-import { Calendar } from '@/src/components/ui/calendar'
-import { useEffect, useMemo, useState } from 'react'
-import { ptBR } from 'date-fns/locale'
-import { addDays, setHours, setMinutes } from 'date-fns'
-import { GetServicesForEsblishment } from '@/src/actions/service-action'
-import { ServiceItem } from '../../_components/service-item'
-import { Booking, Service, User } from '@prisma/client'
-import { ServiceLoadingItem } from '../../_components/service-loading-item'
-import { generateDayTimeList } from '@/src/app/helpers/hours'
-import { Button } from '@/src/components/ui/button'
-import { cn } from '@/src/lib/utils'
-import { Loader2, Wallet2Icon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import { CreateBooking } from '@/src/actions/booking-action'
 import { getDayBookings } from '@/src/actions/get-day-booking'
+import { GetServicesForEsblishment } from '@/src/actions/service-action'
+import { generateDayTimeList } from '@/src/app/helpers/hours'
+import { Button } from '@/src/components/ui/button'
+import { Calendar } from '@/src/components/ui/calendar'
+import { cn } from '@/src/lib/utils'
+import { Booking, Service, User } from '@prisma/client'
+import { addDays, setHours, setMinutes } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { Loader2, Wallet2Icon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
+import { ServiceItem } from '../../_components/service-item'
+import { ServiceLoadingItem } from '../../_components/service-loading-item'
 
 interface Appointment {
   params: {
@@ -80,7 +80,6 @@ export default function Appointment({ params }: Appointment) {
       return [...prev, id]
     })
   }
-  console.log({ loading, idServiceSelected })
 
   async function handleSubmit() {
     setLoading(true)
@@ -153,8 +152,8 @@ export default function Appointment({ params }: Appointment) {
             onClick={() => setHour(time)}
             variant={hour === time ? 'default' : 'outline'}
             className={cn(
-              'rounded-md border-primary-900 text-primary-900 hover:bg-primary-900 hover:text-white ',
-              hour === time && 'bg-primary-900 text-white',
+              'rounded-md border-primary-900 text-primary-900 hover:bg-primary-900 hover:text-white-900 ',
+              hour === time && 'bg-primary-900 text-white-900',
             )}
           >
             {time}
@@ -166,7 +165,7 @@ export default function Appointment({ params }: Appointment) {
           disabled={loading}
           onClick={() => handleSubmit()}
           variant="default"
-          className="w-full bg-primary-900 text-white font-bold h-14 rounded-md hover:bg-primary-800"
+          className="w-full bg-primary-900 text-white-900 font-bold h-14 rounded-md hover:bg-primary-800"
         >
           {loading && <Loader2 className="mr-2 h-6 w-6 animate-spin" />}
           Reservar <Wallet2Icon className="ml-2" />

@@ -10,12 +10,13 @@ interface EstablishmentImageProps {
 export function EstablishmentImage({
   imageUrl,
   alt,
-  width = 135,
-  height = 135,
+  width = 500,
+  height = 500,
 }: EstablishmentImageProps) {
   return (
     <Image
-      className="p-0 m-0 object-fill rounded-md shadow-sm"
+      className="p-0 m-0 object-fill rounded-md shadow-sm w-32 h-24"
+      loading="lazy"
       src={imageUrl}
       alt={alt}
       width={width}

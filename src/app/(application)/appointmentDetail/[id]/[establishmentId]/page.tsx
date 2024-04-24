@@ -1,7 +1,6 @@
 import db from '@/src/lib/prisma'
 import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
-import { EsblishmentItem } from '../../../_components/establishmentItem-item'
 import { EstablishmentItem } from '../../../_components/establishmentItem'
 
 interface AppointmentDetailProps {
@@ -40,17 +39,20 @@ export default async function AppointmentDetail({
           className="w-full h-fit object-cover"
         />
         <div className="absolute w-fit h-fit m-4 bg-primary-700/50 rounded-md">
-          {establishment && (
-            <EsblishmentItem
-              esblishmentItem={establishment}
-              className="rounded-md m-4 text-white-900"
-            />
-          )}
-          <EstablishmentItem.Root className="rounded-md m-4 text-white-900">
+          <EstablishmentItem.Root>
             <EstablishmentItem.Image
               imageUrl={establishment?.imageUrl as string}
               alt={establishment?.name as string}
             />
+            <div className="flex flex-col">
+              <EstablishmentItem.Title>
+                {establishment?.name}
+              </EstablishmentItem.Title>
+              <EstablishmentItem.Address>
+                {establishment?.address}
+              </EstablishmentItem.Address>
+              <EstablishmentItem.Rating>4.1</EstablishmentItem.Rating>
+            </div>
           </EstablishmentItem.Root>
         </div>
       </div>
