@@ -14,6 +14,7 @@ import { Loader2, Wallet2Icon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { CreateBooking } from '@/src/actions/booking-action'
 import { getDayBookings } from '@/src/actions/get-day-booking'
+import { useRouter } from 'next/navigation'
 
 interface Appointment {
   params: {
@@ -27,6 +28,8 @@ export default function Appointment({ params }: Appointment) {
   const [hour, setHour] = useState<string>('')
   const [idServiceSelected, setIdServiceSelected] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+
+  const router = useRouter()
 
   const { data } = useSession()
 
@@ -90,7 +93,7 @@ export default function Appointment({ params }: Appointment) {
       const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
 
       // idServiceSelected.map(async (serviceId) => {
-      await CreateBooking({
+      const response = await CreateBooking({
         date: newDate,
         userId: (data.user as User).id,
         establishmentId: params.id,
@@ -101,6 +104,8 @@ export default function Appointment({ params }: Appointment) {
         statusId: 'Pendente',
       })
       // })
+
+      router.push(`/appointmentDetail/${response?.id}/${params.id}`)
     } catch (error) {
       console.log(error)
     } finally {

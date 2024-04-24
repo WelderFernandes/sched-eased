@@ -235,7 +235,7 @@ export default async function EstablishmentDetails({
             </div>
           </div> */}
         </TabsContent>
-        <TabsContent value="services" className="w-full py-3 px-5">
+        <TabsContent value="services" className="w-full py-6 px-5">
           <h1 className="text-gray-900 font-semibold pb-5">Nossos serviços</h1>
           <div className="flex flex-col gap-4">
             <Suspense fallback={<EstablishmentItemLoading />}>
@@ -265,12 +265,16 @@ export default async function EstablishmentDetails({
             </Suspense>
           </div>
         </TabsContent>
-        <TabsContent value="schedule">Agenda.</TabsContent>
-        <TabsContent value="reviews">Reviews</TabsContent>
+        <TabsContent value="schedule" className="py-6">
+          Agenda.
+        </TabsContent>
+        <TabsContent value="reviews" className="py-6">
+          Reviews
+        </TabsContent>
       </Tabs>
-      <div className="px-6">
+      <div className="px-6 pb-6">
         <Link href={`/appointment/${esblishment?.id}`}>
-          <Button className="h-14 bg-primary-900 text-white w-full text-xl">
+          <Button className="h-14  bg-primary-900 text-white w-full text-xl">
             Fazer uma reserva
           </Button>
         </Link>

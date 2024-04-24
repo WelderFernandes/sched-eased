@@ -5,7 +5,7 @@ import { ComponentProps } from 'react'
 import { FaLocationDot, FaStar } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
 
-interface EsblishmentItemProps extends ComponentProps<'div'> {
+export interface EsblishmentItemProps extends ComponentProps<'div'> {
   esblishmentItem: Establishment
 }
 

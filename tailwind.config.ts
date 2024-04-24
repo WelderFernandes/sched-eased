@@ -54,6 +54,9 @@ const config = {
           800: '#1F2937',
           900: '#111827',
         },
+        white: {
+          900: '#FFFFFF',
+        },
         blueGray: {
           50: '#F8FAFC',
           100: '#EBF0F5',
