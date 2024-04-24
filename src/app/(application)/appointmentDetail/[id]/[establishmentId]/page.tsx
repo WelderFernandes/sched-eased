@@ -1,5 +1,5 @@
 import db from '@/src/lib/prisma'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, LucideCalendarRange } from 'lucide-react'
 import Image from 'next/image'
 import { EstablishmentItem } from '../../../_components/establishmentItem'
 
@@ -24,27 +24,27 @@ export default async function AppointmentDetail({
   console.log('🚀 ~ establishment:', establishment, bookings)
 
   return (
-    <div className="flex min-h-screen min-w-screen flex-col  bg-primary-900 text-white-900">
-      <div className="flex items-center justify-start gap-6 h-14 px-6">
+    <div className="flex h-screen flex-col bg-primary-900 text-white-900">
+      <div className="flex items-center justify-start gap-6 py-4 px-6 ">
         <ArrowLeft className="text-white-900" />
         <h1 className="text-white font-bold">Seu compromisso</h1>
       </div>
-      <div className="relative flex  items-center justify-center">
+      <div className="relative flex h-[500px] w-full overflow-hidden items-center justify-center">
         <Image
           src="/chip.png"
           alt="Next.js Logo"
-          width={500}
-          height={500}
           quality={100}
-          className="w-full h-fit object-cover"
+          objectFit="cover"
+          layout="fill"
+          className="w-full absolute"
         />
-        <div className="absolute w-fit h-fit m-4 bg-primary-700/50 rounded-md">
+        <div className="relative w-fit h-fit m-4 bg-primary-700/50 rounded-md">
           <EstablishmentItem.Root>
             <EstablishmentItem.Image
               imageUrl={establishment?.imageUrl as string}
               alt={establishment?.name as string}
             />
-            <div className="flex flex-col">
+            <EstablishmentItem.Content>
               <EstablishmentItem.Title>
                 {establishment?.name}
               </EstablishmentItem.Title>
@@ -52,9 +52,19 @@ export default async function AppointmentDetail({
                 {establishment?.address}
               </EstablishmentItem.Address>
               <EstablishmentItem.Rating>4.1</EstablishmentItem.Rating>
-            </div>
+            </EstablishmentItem.Content>
           </EstablishmentItem.Root>
         </div>
+      </div>
+      <div className="rounded-t-xl bg-white-900 p-4 h-full text-foreground">
+        <div className="flex flex-row gap-2 items-center align-middle">
+          <LucideCalendarRange size={18} />
+          <h3 className="font-bold">Data e Hora</h3>
+        </div>
+        <p className="text-gray-500">Sun, 15 Jan - 08:00 AM</p>
+        <h1 className="text-primary-900 font-semibold py-6">
+          Lista de serviços
+        </h1>
       </div>
     </div>
   )

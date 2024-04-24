@@ -1,4 +1,5 @@
 import EstablishmentAddress from './establishment-address'
+import EstablishmentContent from './establishment-content'
 import { EstablishmentImage } from './establishment-image'
 import EstablishmentRating from './establishment-rating'
 import { EstablishmentRoot } from './establishment-root'
@@ -10,4 +11,5 @@ export const EstablishmentItem = {
   Title: EstablishmentTitile,
   Address: EstablishmentAddress,
   Rating: EstablishmentRating,
+  Content: EstablishmentContent,
 }

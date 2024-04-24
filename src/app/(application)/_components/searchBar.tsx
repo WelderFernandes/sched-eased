@@ -1,7 +1,3 @@
-import { ComponentProps } from 'react'
-import { FiSearch } from 'react-icons/fi'
-import { GiSettingsKnobs } from 'react-icons/gi'
-import { twMerge } from 'tailwind-merge'
 import {
   Drawer,
   DrawerClose,
@@ -11,23 +7,27 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/src/components/ui/drawer'
-import { IoCloseSharp } from 'react-icons/io5'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/src/components/ui/popover'
+import { ComponentProps } from 'react'
+import { FiSearch } from 'react-icons/fi'
+import { GiSettingsKnobs } from 'react-icons/gi'
+import { IoCloseSharp } from 'react-icons/io5'
+import { twMerge } from 'tailwind-merge'
 
 import { Button } from '@/src/components/ui/button'
-import { BsQuestionSquareFill } from 'react-icons/bs'
-import { ToggleGroup, ToggleGroupItem } from '@/src/components/ui/toggle-group'
-import { Ratings } from './rating'
 import { Label } from '@/src/components/ui/label'
 import { ScrollArea } from '@/src/components/ui/scroll-area'
+import { ToggleGroup, ToggleGroupItem } from '@/src/components/ui/toggle-group'
+import { BsQuestionSquareFill } from 'react-icons/bs'
+import { Ratings } from './rating'
 
 export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
   const toggleGroupItemClasses =
-    'hover:bg-primary-50 data-[state=on]:bg-primary-50 ring-1 ring-primary-200 data-[state=on]:ring-1 data-[state=on]:ring-primary-900 text-base data-[state=off]:bg-white data-[state=off]:text-gray-500'
+    'hover:bg-primary-50 data-[state=on]:bg-primary-50 ring-1 ring-primary-200 data-[state=on]:ring-1 data-[state=on]:ring-primary-900 text-base data-[state=off]:bg-white-900 data-[state=off]:text-gray-500'
 
   return (
     <div className="w-full flex items-center gap-3">
@@ -55,7 +55,7 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
             color="warning"
             aria-label="Take a photo"
             type="submit"
-            className="h-11 w-11 phone:w-14 rounded-md flex items-center justify-center bg-primary-900 p-0 text-white"
+            className="h-11 w-11 phone:w-14 rounded-md flex items-center justify-center bg-primary-900 p-0 text-white-900"
           >
             <GiSettingsKnobs size={24} />
           </Button>
@@ -70,7 +70,7 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
                     color="warning"
                     aria-label="Take a photo"
                     type="submit"
-                    className="h-11 w-11 p-1 phone:w-14 rounded-md flex items-center justify-center bg-white shadow-none"
+                    className="h-11 w-11 p-1 phone:w-14 rounded-md flex items-center justify-center bg-white-900 shadow-none"
                   >
                     <BsQuestionSquareFill
                       size={24}
@@ -96,7 +96,7 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
                 
               </DrawerDescription> */}
             </DrawerHeader>
-            <div className="w-full bg-white px-5 py-6">
+            <div className="w-full bg-white-900 px-5 py-6">
               <h1 className="text-lg font-bold text-primary-900 mb-4">
                 Categorias
               </h1>
@@ -181,10 +181,10 @@ export function SearchBar({ className, ...props }: ComponentProps<'div'>) {
                 </div>
               </div>
             </div>
-            <DrawerFooter className="bg-white">
+            <DrawerFooter className="bg-white-900">
               <Button
                 variant="default"
-                className="w-full bg-primary-900 text-white font-extrabold h-[54px]"
+                className="w-full bg-primary-900 text-white-900 font-extrabold h-[54px]"
               >
                 Aplicar
               </Button>

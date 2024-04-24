@@ -1,19 +1,20 @@
-import Image from 'next/image'
-import { CgArrowTopRightR } from 'react-icons/cg'
-import { SearchBar } from '../_components/searchBar'
-import { Card, CardContent } from '@/src/components/ui/card'
 import { Button } from '@/src/components/ui/button'
-import { Separator } from '@/src/components/ui/separator'
-import { FaLocationDot, FaStar } from 'react-icons/fa6'
+import { Card, CardContent } from '@/src/components/ui/card'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/src/components/ui/carousel'
+import { Separator } from '@/src/components/ui/separator'
 import db from '@/src/lib/prisma'
-import { EsblishmentItem } from '../_components/establishmentItem-item'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Suspense } from 'react'
+import { CgArrowTopRightR } from 'react-icons/cg'
+import { FaLocationDot, FaStar } from 'react-icons/fa6'
+import { EstablishmentItem } from '../_components/establishmentItem'
 import { EstablishmentItemLoading } from '../_components/establishmentitem-loading'
+import { SearchBar } from '../_components/searchBar'
 
 export default async function Home() {
   const [establishmentData] = await Promise.all([
@@ -22,8 +23,6 @@ export default async function Home() {
       orderBy: { name: 'asc' },
     }),
   ])
-
-  console.log('🚀 ~ Home ~ establishmentData:', establishmentData)
 
   return (
     <div className="px-4 py-5 flex flex-col ">
@@ -42,9 +41,9 @@ export default async function Home() {
           <div className="absolute bottom-4 left-4">
             <Button
               color="default"
-              className="bg-primary-900 h-10 text-ellipsis font-bold text-white"
+              className="bg-primary-900 h-10 text-ellipsis font-bold text-white-900"
             >
-              Reservando agora
+              Reserve agora
             </Button>
           </div>
           <Image
@@ -65,11 +64,25 @@ export default async function Home() {
       </h1>
       <Suspense fallback={<EstablishmentItemLoading />}>
         {establishmentData.map((data) => (
-          <EsblishmentItem
-            key={data.id}
-            className="mt-4"
-            esblishmentItem={data}
-          />
+          <Link href={`/establishment/${data.id}`} key={data.id}>
+            <EstablishmentItem.Root>
+              <EstablishmentItem.Image
+                imageUrl={data.imageUrl}
+                alt={data.name}
+              />
+              <EstablishmentItem.Content>
+                <EstablishmentItem.Title className="text-primary-900">
+                  {data.name}
+                </EstablishmentItem.Title>
+                <EstablishmentItem.Address className="text-primary-500">
+                  {data.address}
+                </EstablishmentItem.Address>
+                <EstablishmentItem.Rating className="text-primary-500">
+                  5.0
+                </EstablishmentItem.Rating>
+              </EstablishmentItem.Content>
+            </EstablishmentItem.Root>
+          </Link>
         ))}
       </Suspense>
 
@@ -91,9 +104,9 @@ export default async function Home() {
               />
               <Button
                 color="default"
-                className="bg-primary-900 h-10 text-ellipsis font-bold text-white absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
+                className="bg-primary-900 h-10 text-ellipsis font-bold text-white-900 absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
               >
-                Reservando agora
+                Reserve agora
               </Button>
             </div>
             <div className="flex flex-col">
@@ -122,9 +135,9 @@ export default async function Home() {
               />
               <Button
                 color="default"
-                className="bg-primary-900 h-10 text-ellipsis font-bold text-white absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
+                className="bg-primary-900 h-10 text-ellipsis font-bold text-white-900 absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
               >
-                Reservando agora
+                Reserve agora
               </Button>
             </div>
             <div className="flex flex-col">
@@ -153,9 +166,9 @@ export default async function Home() {
               />
               <Button
                 color="default"
-                className="bg-primary-900 h-10 text-ellipsis font-bold text-white absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
+                className="bg-primary-900 h-10 text-ellipsis font-bold text-white-900 absolute bottom-0 right-0 rounded-s-md rounded-e-none rounded-br-xl"
               >
-                Reservando agora
+                Reserve agora
               </Button>
             </div>
             <div className="flex flex-col">
@@ -176,11 +189,9 @@ export default async function Home() {
       </Carousel>
 
       {establishmentData.map((establishment) => (
-        <EsblishmentItem
-          key={establishment.id}
-          className="mt-4"
-          esblishmentItem={establishment}
-        />
+        <EstablishmentItem.Root key={establishment.id}>
+          {establishment.id}
+        </EstablishmentItem.Root>
       ))}
 
       <div className="flex items-center align-middle justify-center pt-4">
