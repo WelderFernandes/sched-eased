@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { Header } from '../_components/header'
 // import { Header } from '../_components/header'
 
 export default function AplicationLayout({
@@ -7,10 +6,5 @@ export default function AplicationLayout({
 }: Readonly<{
   children: ReactNode
 }>) {
-  return (
-    <div>
-      <Header />
-      {children}
-    </div>
-  )
+  return <div>{children}</div>
 }

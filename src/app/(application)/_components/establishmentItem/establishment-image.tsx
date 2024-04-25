@@ -19,7 +19,6 @@ export function EstablishmentImage({
       loading="lazy"
       src={imageUrl || '/images/placeholder.png'}
       alt={alt}
-      objectFit="cover"
       width={width}
       height={height}
       quality={100}

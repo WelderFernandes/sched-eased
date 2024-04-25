@@ -34,7 +34,6 @@ export default async function AppointmentDetail({
           src="/chip.png"
           alt="Next.js Logo"
           quality={100}
-          objectFit="cover"
           layout="fill"
           className="w-full absolute"
         />

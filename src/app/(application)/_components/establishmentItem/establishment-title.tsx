@@ -11,7 +11,7 @@ export function EstablishmentTitile({
   ...props
 }: EstablishmentTitleProps) {
   return (
-    <div className={cn('text-lg font-bold', className)} {...props}>
+    <div className={cn('text-md font-bold', className)} {...props}>
       {children}
     </div>
   )
