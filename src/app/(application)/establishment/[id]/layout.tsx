@@ -1,9 +1,9 @@
 'use client'
 import { Button } from '@/src/components/ui/button'
-import { Bell } from 'lucide-react'
 import { ReactNode } from 'react'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import { Header } from '../../_components/header'
+import { ItemAvatar } from '../../_components/item/item-avatar'
 
 export default function EstablishmentLayout({
   children,
@@ -30,7 +30,7 @@ export default function EstablishmentLayout({
             alert('teste')
           }}
         >
-          <Header.Icon icon={Bell} />
+          <ItemAvatar imageUrl="https://github.com/welde.png" alt="welde" />
         </Button>
       </Header.Root>
       {children}

@@ -15,10 +15,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { FaServicestack } from 'react-icons/fa6'
 import { EstablishmentItemLoading } from '../../_components/establishmentitem-loading'
-import { UserAvatar } from '../../_components/user/user-avatar'
-import { UserContent } from '../../_components/user/user-content'
-import { UserRightItem } from '../../_components/user/user-right-tem'
-import { UserRoot } from '../../_components/user/user-root'
+import { Item } from '../../_components/item'
 
 export interface EstablishmentProps {
   params: {
@@ -174,65 +171,13 @@ export default async function EstablishmentDetails({
             <span className="font-bold">09.00 am - 06.00 pm </span>
           </div>
           <h1 className="font-bold py-4">Nosso Time</h1>
-          <UserRoot>
-            <UserAvatar
+          <Item.Root>
+            <Item.Avatar
               imageUrl="https://github.com/welderfernandes.png"
               alt="Welder Fernandes"
             />
-            <UserContent title="Co-fundador" subTitle="Welder Fernandes">
-              <UserRightItem />
-            </UserContent>
-          </UserRoot>
-          {/* <div className="flex flex-col gap-4">
-            <div className="flex">
-              <Avatar>
-                <AvatarImage src="https://github.com/welderfernandes.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="flex justify-between w-full align-middle">
-                <div className="flex flex-col align-middle justify-center px-2">
-                  <h1 className="font-bold">Welder Fernandes</h1>
-                  <p className="text-sm text-gray-500">Co-fundador</p>
-                </div>
-                <div className="flex align-middle items-center justify-center gap-2">
-                  <StarIcon size={18} className="text-gray-400" />
-                  5.0
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <Avatar>
-                <AvatarImage src="https://github.com/welderfernandes.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="flex justify-between w-full align-middle">
-                <div className="flex flex-col align-middle justify-center px-2">
-                  <h1 className="font-bold">Welder Fernandes</h1>
-                  <p className="text-sm text-gray-500">Co-fundador</p>
-                </div>
-                <div className="flex align-middle items-center justify-center gap-2">
-                  <StarIcon size={18} className="text-gray-400" />
-                  5.0
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <Avatar>
-                <AvatarImage src="https://github.com/welderfernandes.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="flex justify-between w-full align-middle">
-                <div className="flex flex-col align-middle justify-center px-2">
-                  <h1 className="font-bold">Welder Fernandes</h1>
-                  <p className="text-sm text-gray-500">Co-fundador</p>
-                </div>
-                <div className="flex align-middle items-center justify-center gap-2">
-                  <StarIcon size={18} className="text-gray-400" />
-                  5.0
-                </div>
-              </div>
-            </div>
-          </div> */}
+            <Item.Content title="Co-fundador" subTitle="Welder Fernandes" />
+          </Item.Root>
         </TabsContent>
         <TabsContent value="services" className="w-full py-6 px-5">
           <h1 className="text-gray-900 font-semibold pb-5">Nossos serviços</h1>
