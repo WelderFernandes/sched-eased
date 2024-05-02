@@ -33,6 +33,9 @@ export default function Appointment({ params }: Appointment) {
 
   const { data } = useSession()
 
+  console.log('🚀 ~ Appointment ~ services:', services)
+  console.log('🚀 ~ Appointment ~ idServiceSelected:', idServiceSelected)
+
   useEffect(() => {
     async function RefreshServices() {
       setDate(date as Date)

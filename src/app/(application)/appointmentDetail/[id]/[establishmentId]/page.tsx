@@ -2,6 +2,7 @@ import db from '@/src/lib/prisma'
 import { ArrowLeft, LucideCalendarRange } from 'lucide-react'
 import Image from 'next/image'
 import { EstablishmentItem } from '../../../_components/establishmentItem'
+import { Item } from '../../../_components/item'
 
 interface AppointmentDetailProps {
   params: {
@@ -21,7 +22,7 @@ export default async function AppointmentDetail({
       where: { id: params.id },
     }),
   ])
-  console.log('🚀 ~ establishment:', establishment, bookings)
+  console.log('🚀 ~ establishment:', params.id, bookings)
 
   return (
     <div className="flex h-screen flex-col bg-primary-900 text-white-900">
@@ -64,6 +65,10 @@ export default async function AppointmentDetail({
         <h1 className="text-primary-900 font-semibold py-6">
           Lista de serviços
         </h1>
+        <Item.Root>
+          <Item.Avatar imageUrl="/chip.png" alt="Chip" />
+          <Item.Content></Item.Content>
+        </Item.Root>
       </div>
     </div>
   )
