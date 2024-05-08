@@ -32,14 +32,21 @@ export default function AplicationLayout({
         <Sheet>
           <SheetTrigger>
             {session.status === 'authenticated' ? (
-              <Avatar className="w-12 h-12">
+              <Avatar className="w-8 h-8">
                 <AvatarImage src={session.data.user.image as string} />
                 <AvatarFallback>
                   <FaUser className="w-8 h-8" />
                 </AvatarFallback>
               </Avatar>
             ) : (
-              <Header.Icon icon={FaUser} className="w-8 h-8" />
+              <Button
+                size="icon"
+                className="rounded-full"
+                variant="outline"
+                asChild
+              >
+                <Header.Icon icon={FaUser} className="w-4 h-4" />
+              </Button>
             )}
           </SheetTrigger>
           <SheetContent>

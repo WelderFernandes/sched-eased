@@ -3,6 +3,16 @@ import { CreateBooking } from '@/src/actions/booking-action'
 import { getDayBookings } from '@/src/actions/get-day-booking'
 import { GetServicesForEsblishment } from '@/src/actions/service-action'
 import { generateDayTimeList } from '@/src/app/helpers/hours'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/src/components/ui/alert-dialog'
 import { Button } from '@/src/components/ui/button'
 import { Calendar } from '@/src/components/ui/calendar'
 import { cn } from '@/src/lib/utils'
@@ -10,7 +20,7 @@ import { Booking, Service, User } from '@prisma/client'
 import { addDays, setHours, setMinutes } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Loader2, Wallet2Icon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { ServiceItem } from '../../_components/service-item'
@@ -28,13 +38,11 @@ export default function Appointment({ params }: Appointment) {
   const [hour, setHour] = useState<string>('')
   const [idServiceSelected, setIdServiceSelected] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
 
   const router = useRouter()
-
+  const session = useSession()
   const { data } = useSession()
-
-  console.log('🚀 ~ Appointment ~ services:', services)
-  console.log('🚀 ~ Appointment ~ idServiceSelected:', idServiceSelected)
 
   useEffect(() => {
     async function RefreshServices() {
@@ -87,6 +95,9 @@ export default function Appointment({ params }: Appointment) {
   async function handleSubmit() {
     setLoading(true)
     try {
+      if (!session.data?.user) {
+        setOpenDialog(!openDialog)
+      }
       if (!hour || !date || !data?.user) {
         return
       }
@@ -105,8 +116,6 @@ export default function Appointment({ params }: Appointment) {
             ?.price || 0,
         statusId: 'Pendente',
       })
-      // })
-
       router.push(`/appointmentDetail/${response?.id}/${params.id}`)
     } catch (error) {
       console.log(error)
@@ -117,6 +126,37 @@ export default function Appointment({ params }: Appointment) {
 
   return (
     <div className="px-6 h-screen">
+      <AlertDialog open={openDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Agendamento exclusivo para cadastrados!
+            </AlertDialogTitle>
+            <AlertDialogDescription className="mx-5">
+              <p>Para agendar, basta fazer login ou se cadastrar rapidinho!</p>
+              <p className="font-semibold mt-5 text-left mx-5">
+                Vantagens de se cadastrar:
+              </p>
+              <ul className="list-disc text-left mt-2 mb-4 mx-8 font-semibold">
+                <li>Agendamentos salvos e organizados.</li>
+                <li className="">Histórico de agendamentos para consulta. </li>
+                <li className="">Ofertas e promoções exclusivas. </li>
+              </ul>
+              <h3>Cadastre-se em segundos e aproveite!</h3>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-primary-900 text-white-900"
+              onClick={() => signIn('google')}
+            >
+              Realizar Login
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <Calendar
         locale={ptBR}
         fromDate={addDays(new Date(), 0)}
